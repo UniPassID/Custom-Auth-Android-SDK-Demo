@@ -7,10 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.unipass.custom_auth_sdk_android_demo.databinding.FragmentFirstBinding
 import com.unipass.smartAccount.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import org.web3j.crypto.ECKeyPair
 import org.web3j.crypto.Keys
 import org.web3j.utils.Numeric
 import java.math.BigInteger
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -18,6 +24,8 @@ import java.math.BigInteger
 class FirstFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
+    private val coroutineScope: CoroutineScope = MainScope()
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -37,9 +45,10 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonFirst.setOnClickListener {
-//            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            coroutineScope.launch(Dispatchers.Main) {
+                testSmartAccount()
+            }
 
-            this.testEOASigner()
         }
     }
 
@@ -60,7 +69,7 @@ class FirstFragment : Fragment() {
             
             """.trimIndent()
             val signer = EOASigner(sPrivatekeyInHex)
-            val address = signer.address
+            val address = signer.address()
             content += """
             address: $address
             
@@ -80,47 +89,72 @@ class FirstFragment : Fragment() {
         }
     }
 
-    fun testSmartAccount() {
-        try{
+    suspend fun testSmartAccount() {
+        try {
             val ecKeyPair: ECKeyPair = Keys.createEcKeyPair()
             val privateKeyInDec: BigInteger = ecKeyPair.getPrivateKey()
             val sPrivatekeyInHex = privateKeyInDec.toString(16)
             val signer = EOASigner(sPrivatekeyInHex)
 
             /// init smart account instance
-            val smartAccountOption = SmartAccountOptions()
-            smartAccountOption.appId = "APPID";
-            smartAccountOption.masterKeySigner = signer;
-            smartAccountOption.unipassServerUrl = "";
+            val smartAccountOption = SmartAccountOptions(
+                signer,
+                "9e145ea3e5525ee793f39027646c4511",
+                "https://wallet.unipass.id/wallet-custom-auth",
+                arrayOf(
+                    ChainOptions(
+                        ChainID.POLYGON_MUMBAI,
+                        "https://node.wallet.unipass.id/polygon-mumbai",
+                        "https://t.wallet.unipass.id/relayer-v2-polygon"
+                    )
+                )
+            )
             val smartAccount = SmartAccount(smartAccountOption)
+            smartAccount.init(SmartAccountInitOptions(ChainID.POLYGON_MUMBAI))
 
             /// get smart account address
             val address = smartAccount.address;
 
-            /// sign message with smart account
-            val sig = smartAccount.signMessage("hello world")
-
-            /// send transaction with smart account
-            val tx = Transaction();
-            // USDC Contract address
-            tx.to = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
-            tx.value = BigInteger.valueOf(0);
-            // ERC20 transfer data: transfer 216.29 USDC to 0x7D5FE7F6CFF4Badd6939db27CADA6f0Bd902D3C1
-            tx.data = Numeric.hexStringToByteArray("0xa9059cbb0000000000000000000000007d5fe7f6cff4badd6939db27cada6f0bd902d3c1000000000000000000000000000000000000000000000000000000000ce452d0")
-
-
-            /// simulate transaction to fetch tx fee
-            val simulateRet = smartAccount.simulateTransaction(tx)
-            val sendTransactionOptions = SendTransactionOptions()
-            if(simulateRet!!.isFeeRequired == true) {
-                sendTransactionOptions.fee = simulateRet.feeOptions.get(0)
-            }
-
-            // send transaction to get tx hash
-            val txHash = smartAccount.sendTransaction(tx, sendTransactionOptions)
-            // get transaction receipt from chain
-            val receipt = smartAccount.waitTransactionReceiptByHash(txHash, 2, ChainID.ETHEREUM_MAINNET, 60);
-        }catch(err: Exception) {
+//
+//            /// send transaction with smart account
+//            val tx = Transaction();
+//            // USDC Contract address
+//            tx.to = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
+//            tx.value = BigInteger.valueOf(0);
+//            // ERC20 transfer data: transfer 216.29 USDC to 0x7D5FE7F6CFF4Badd6939db27CADA6f0Bd902D3C1
+//            tx.data =
+//                Numeric.hexStringToByteArray("0xa9059cbb0000000000000000000000007d5fe7f6cff4badd6939db27cada6f0bd902d3c1000000000000000000000000000000000000000000000000000000000ce452d0")
+//
+//
+//            /// simulate transaction to fetch tx fee
+//            val simulateRet = smartAccount.simulateTransaction(tx)
+//            val sendTransactionOptions = SendTransactionOptions()
+//            if (simulateRet!!.isFeeRequired == true) {
+//                sendTransactionOptions.fee = simulateRet.feeOptions.get(0)
+//            }
+//
+//            // send transaction to get tx hash
+//            val txHash = smartAccount.sendTransaction(tx, sendTransactionOptions)
+//            // get transaction receipt from chain
+//            val receipt =
+//                smartAccount.waitTransactionReceiptByHash(txHash, 2, ChainID.ETHEREUM_MAINNET, 60);
+            var content = ""
+            content += """
+            address: $address
+            
+            
+            """.trimIndent()
+            val message = "HAHA"
+            var sig: String? = null;
+            sig = smartAccount.signMessage(message);
+            println("Sign Message Success")
+            content += "message: $message\n"
+            content += """
+            sig: $sig
+            
+            """.trimIndent()
+            binding.textviewFirst.text = content
+        } catch (err: Exception) {
             println(err)
         }
     }

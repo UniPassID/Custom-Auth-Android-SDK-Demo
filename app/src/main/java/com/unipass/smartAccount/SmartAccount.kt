@@ -7,14 +7,46 @@ import kotlin.jvm.JvmOverloads
 import com.unipass.smartAccount.SimulateTransactionOptions
 import com.unipass.smartAccount.SimulateResult
 import com.unipass.smartAccount.SendTransactionOptions
+import kotlinx.coroutines.coroutineScope
 import org.web3j.protocol.core.methods.response.TransactionReceipt
+import org.web3j.utils.Numeric
+import uniffi.shared.SmartAccount
+import uniffi.shared.SmartAccountBuilder
+import java.math.BigInteger
+import kotlin.coroutines.suspendCoroutine
 
-class SmartAccount(options: SmartAccountOptions?) {
-    fun init(options: SmartAccountInitOptions?) {}//        throw new Exception("not implemented");
+class SmartAccount(options: SmartAccountOptions) {
+    var builder: SmartAccountBuilder?;
+    var inner: SmartAccount? = null;
+    var masterKeySigner: WrapSigner;
+
+    init {
+        masterKeySigner = WrapSigner(options.masterKeySigner);
+        builder = SmartAccountBuilder();
+        builder!!.withAppId(options.appId);
+        builder!!.withMasterKeySigner(masterKeySigner);
+        builder!!.withUnipassServerUrl(options.unipassServerUrl);
+        options.chainOptions.iterator().forEach { chainOptions ->
+            builder!!.addChainOption(
+                chainOptions.chainId.iD.toULong(),
+                chainOptions.rpcUrl,
+                chainOptions.relayerUrl
+            )
+        };
+    }
+
+    suspend fun init(options: SmartAccountInitOptions) {
+        builder!!.withActiveChain(options.chainId.iD.toULong());
+        return coroutineScope {
+            inner = builder!!.build();
+            builder!!.destroy();
+            builder = null;
+        }
+    }
 
     /*********************** Account Status Functions  */
     val address: String?
-        get() = null
+        get() = Numeric.toHexString(inner?.address()?.toUByteArray()?.toByteArray())
 
     //        throw new Exception("not implemented");
     val isDeployed: Boolean
@@ -27,8 +59,11 @@ class SmartAccount(options: SmartAccountOptions?) {
     fun switchChain(chainID: ChainID?) {}
 
     /*********************** Message Sign Functions  */
-    fun signMessage(message: String?): String? {
-        return null
+    suspend fun signMessage(message: String): String? {
+        return Numeric.toHexString(
+            inner?.signMessage(message.toByteArray().toUByteArray().toList())?.toUByteArray()
+                ?.toByteArray()
+        );
     }
 
     fun signMessage(messageBytes: ByteArray?): String? {

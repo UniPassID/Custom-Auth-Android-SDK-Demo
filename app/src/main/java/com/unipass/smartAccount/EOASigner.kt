@@ -12,15 +12,16 @@ class EOASigner(privateKey: String?) : Signer {
         credentials = Credentials.create(privateKey)
     }
 
-    override val address: String
-        get() = credentials!!.address
+    override fun address(): String {
+        return credentials!!.address
+    }
 
-    override fun signMessage(message: String?): String? {
+    override fun signMessage(message: String): String {
         val messageBytes = message!!.toByteArray(StandardCharsets.UTF_8)
         return this.signMessage(messageBytes)
     }
 
-    override fun signMessage(message: ByteArray?): String? {
+    override fun signMessage(message: ByteArray): String {
         val signature = Sign.signPrefixedMessage(message, credentials!!.ecKeyPair)
         val value = ByteArray(65)
         System.arraycopy(signature.r, 0, value, 0, 32)

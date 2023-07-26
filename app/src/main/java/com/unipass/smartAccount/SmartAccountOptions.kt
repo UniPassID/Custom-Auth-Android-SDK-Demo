@@ -1,7 +1,10 @@
 package com.unipass.smartAccount
 
-class SmartAccountOptions {
-    var masterKeySigner: Signer? = null
-    var appId: String? = null
-    var unipassServerUrl: String? = null
+class SmartAccountOptions(
+    val masterKeySigner: Signer,
+    val appId: String,
+    val unipassServerUrl: String,
+    val chainOptions: Array<ChainOptions>
+) {
+
 }
