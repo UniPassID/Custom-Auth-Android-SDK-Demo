@@ -400,6 +400,15 @@ internal interface _UniFFILib : Library {
         `ptr`: Pointer,
         _uniffi_out_err: RustCallStatus,
     ): Long
+    fun uniffi_shared_fn_method_smartaccount_send_transactions(
+        `ptr`: Pointer,
+        `transactions`: RustBuffer.ByValue,
+        `options`: RustBuffer.ByValue,
+        `uniffiExecutor`: USize,
+        `uniffiCallback`: UniFfiFutureCallbackRustBuffer,
+        `uniffiCallbackData`: USize,
+        _uniffi_out_err: RustCallStatus,
+    ): Unit
     fun uniffi_shared_fn_method_smartaccount_sign_hash(
         `ptr`: Pointer,
         `hash`: RustBuffer.ByValue,
@@ -411,6 +420,23 @@ internal interface _UniFFILib : Library {
     fun uniffi_shared_fn_method_smartaccount_sign_message(
         `ptr`: Pointer,
         `message`: RustBuffer.ByValue,
+        `uniffiExecutor`: USize,
+        `uniffiCallback`: UniFfiFutureCallbackRustBuffer,
+        `uniffiCallbackData`: USize,
+        _uniffi_out_err: RustCallStatus,
+    ): Unit
+    fun uniffi_shared_fn_method_smartaccount_simulate_transactions(
+        `ptr`: Pointer,
+        `transactions`: RustBuffer.ByValue,
+        `simulateOptions`: RustBuffer.ByValue,
+        `uniffiExecutor`: USize,
+        `uniffiCallback`: UniFfiFutureCallbackRustBuffer,
+        `uniffiCallbackData`: USize,
+        _uniffi_out_err: RustCallStatus,
+    ): Unit
+    fun uniffi_shared_fn_method_smartaccount_wait_for_transaction(
+        `ptr`: Pointer,
+        `txHash`: RustBuffer.ByValue,
         `uniffiExecutor`: USize,
         `uniffiCallback`: UniFfiFutureCallbackRustBuffer,
         `uniffiCallbackData`: USize,
@@ -428,6 +454,13 @@ internal interface _UniFFILib : Library {
         `chain`: Long,
         `rpcUrl`: RustBuffer.ByValue,
         `httpRelayerUrl`: RustBuffer.ByValue,
+        _uniffi_out_err: RustCallStatus,
+    ): Pointer
+    fun uniffi_shared_fn_method_smartaccountbuilder_add_open_id_with_email_guardian_key(
+        `ptr`: Pointer,
+        `idToken`: RustBuffer.ByValue,
+        `emailAddress`: RustBuffer.ByValue,
+        `roleWeight`: RustBuffer.ByValue,
         _uniffi_out_err: RustCallStatus,
     ): Pointer
     fun uniffi_shared_fn_method_smartaccountbuilder_build(
@@ -450,6 +483,7 @@ internal interface _UniFFILib : Library {
     fun uniffi_shared_fn_method_smartaccountbuilder_with_master_key_signer(
         `ptr`: Pointer,
         `signer`: Long,
+        `roleWeight`: RustBuffer.ByValue,
         _uniffi_out_err: RustCallStatus,
     ): Pointer
     fun uniffi_shared_fn_method_smartaccountbuilder_with_unipass_server_url(
@@ -485,9 +519,13 @@ internal interface _UniFFILib : Library {
     fun uniffi_shared_checksum_method_smartaccount_address(): Short
     fun uniffi_shared_checksum_method_smartaccount_app_id(): Short
     fun uniffi_shared_checksum_method_smartaccount_chain(): Short
+    fun uniffi_shared_checksum_method_smartaccount_send_transactions(): Short
     fun uniffi_shared_checksum_method_smartaccount_sign_hash(): Short
     fun uniffi_shared_checksum_method_smartaccount_sign_message(): Short
+    fun uniffi_shared_checksum_method_smartaccount_simulate_transactions(): Short
+    fun uniffi_shared_checksum_method_smartaccount_wait_for_transaction(): Short
     fun uniffi_shared_checksum_method_smartaccountbuilder_add_chain_option(): Short
+    fun uniffi_shared_checksum_method_smartaccountbuilder_add_open_id_with_email_guardian_key(): Short
     fun uniffi_shared_checksum_method_smartaccountbuilder_build(): Short
     fun uniffi_shared_checksum_method_smartaccountbuilder_with_active_chain(): Short
     fun uniffi_shared_checksum_method_smartaccountbuilder_with_app_id(): Short
@@ -524,13 +562,25 @@ private fun uniffiCheckApiChecksums(lib: _UniFFILib) {
     if (lib.uniffi_shared_checksum_method_smartaccount_chain() != 31244.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_shared_checksum_method_smartaccount_send_transactions() != 52880.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_shared_checksum_method_smartaccount_sign_hash() != 19627.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_shared_checksum_method_smartaccount_sign_message() != 55038.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_shared_checksum_method_smartaccount_simulate_transactions() != 1471.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_shared_checksum_method_smartaccount_wait_for_transaction() != 9892.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_shared_checksum_method_smartaccountbuilder_add_chain_option() != 12444.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_shared_checksum_method_smartaccountbuilder_add_open_id_with_email_guardian_key() != 62133.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_shared_checksum_method_smartaccountbuilder_build() != 58869.toShort()) {
@@ -542,7 +592,7 @@ private fun uniffiCheckApiChecksums(lib: _UniFFILib) {
     if (lib.uniffi_shared_checksum_method_smartaccountbuilder_with_app_id() != 14169.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_shared_checksum_method_smartaccountbuilder_with_master_key_signer() != 32590.toShort()) {
+    if (lib.uniffi_shared_checksum_method_smartaccountbuilder_with_master_key_signer() != 43948.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_shared_checksum_method_smartaccountbuilder_with_unipass_server_url() != 30405.toShort()) {
@@ -584,6 +634,26 @@ public object FfiConverterUByte : FfiConverter<UByte, Byte> {
     }
 }
 
+public object FfiConverterUInt : FfiConverter<UInt, Int> {
+    override fun lift(value: Int): UInt {
+        return value.toUInt()
+    }
+
+    override fun read(buf: ByteBuffer): UInt {
+        return lift(buf.getInt())
+    }
+
+    override fun lower(value: UInt): Int {
+        return value.toInt()
+    }
+
+    override fun allocationSize(value: UInt) = 4
+
+    override fun write(value: UInt, buf: ByteBuffer) {
+        buf.putInt(value.toInt())
+    }
+}
+
 public object FfiConverterULong : FfiConverter<ULong, Long> {
     override fun lift(value: Long): ULong {
         return value.toULong()
@@ -601,6 +671,26 @@ public object FfiConverterULong : FfiConverter<ULong, Long> {
 
     override fun write(value: ULong, buf: ByteBuffer) {
         buf.putLong(value.toLong())
+    }
+}
+
+public object FfiConverterBoolean : FfiConverter<Boolean, Byte> {
+    override fun lift(value: Byte): Boolean {
+        return value.toInt() != 0
+    }
+
+    override fun read(buf: ByteBuffer): Boolean {
+        return lift(buf.get())
+    }
+
+    override fun lower(value: Boolean): Byte {
+        return if (value) 1.toByte() else 0.toByte()
+    }
+
+    override fun allocationSize(value: Boolean) = 1
+
+    override fun write(value: Boolean, buf: ByteBuffer) {
+        buf.put(lower(value))
     }
 }
 
@@ -818,10 +908,17 @@ public interface SmartAccountInterface {
     fun `appId`(): String
     fun `chain`():
         ULong@Throws(SmartAccountException::class)
+    suspend fun `sendTransactions`(`transactions`: List<Transaction>, `options`: SendingTransactionOptions?):
+        String@Throws(SmartAccountException::class)
     suspend fun `signHash`(`hash`: List<UByte>): List<
         UByte,
         >@Throws(SmartAccountException::class)
-    suspend fun `signMessage`(`message`: List<UByte>): List<UByte>
+    suspend fun `signMessage`(`message`: List<UByte>): List<
+        UByte,
+        >@Throws(SmartAccountException::class)
+    suspend fun `simulateTransactions`(`transactions`: List<Transaction>, `simulateOptions`: SimulateTransactionOptions?):
+        SimulateResult@Throws(SmartAccountException::class)
+    suspend fun `waitForTransaction`(`txHash`: String): TransactionReceipt?
 }
 
 class SmartAccount(
@@ -880,6 +977,41 @@ class SmartAccount(
         }.let {
             FfiConverterULong.lift(it)
         }
+
+    @Throws(SmartAccountException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `sendTransactions`(`transactions`: List<Transaction>, `options`: SendingTransactionOptions?): String {
+        // Create a new `CoroutineScope` for this operation, suspend the coroutine, and call the
+        // scaffolding function, passing it one of the callback handlers from `AsyncTypes.kt`.
+        //
+        // Make sure to retain a reference to the callback handler to ensure that it's not GCed before
+        // it's invoked
+        var callbackHolder: UniFfiFutureCallbackHandlerString_TypeSmartAccountError? = null
+        return coroutineScope {
+            val scope = this
+            return@coroutineScope suspendCoroutine { continuation ->
+                try {
+                    val callback = UniFfiFutureCallbackHandlerString_TypeSmartAccountError(continuation)
+                    callbackHolder = callback
+                    callWithPointer { thisPtr ->
+                        rustCall { status ->
+                            _UniFFILib.INSTANCE.uniffi_shared_fn_method_smartaccount_send_transactions(
+                                thisPtr,
+                                FfiConverterSequenceTypeTransaction.lower(`transactions`),
+                                FfiConverterOptionalTypeSendingTransactionOptions.lower(`options`),
+                                FfiConverterForeignExecutor.lower(scope),
+                                callback,
+                                USize(0),
+                                status,
+                            )
+                        }
+                    }
+                } catch (e: Exception) {
+                    continuation.resumeWithException(e)
+                }
+            }
+        }
+    }
 
     @Throws(SmartAccountException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
@@ -948,6 +1080,75 @@ class SmartAccount(
             }
         }
     }
+
+    @Throws(SmartAccountException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `simulateTransactions`(`transactions`: List<Transaction>, `simulateOptions`: SimulateTransactionOptions?): SimulateResult {
+        // Create a new `CoroutineScope` for this operation, suspend the coroutine, and call the
+        // scaffolding function, passing it one of the callback handlers from `AsyncTypes.kt`.
+        //
+        // Make sure to retain a reference to the callback handler to ensure that it's not GCed before
+        // it's invoked
+        var callbackHolder: UniFfiFutureCallbackHandlerTypeSimulateResult_TypeSmartAccountError? = null
+        return coroutineScope {
+            val scope = this
+            return@coroutineScope suspendCoroutine { continuation ->
+                try {
+                    val callback = UniFfiFutureCallbackHandlerTypeSimulateResult_TypeSmartAccountError(continuation)
+                    callbackHolder = callback
+                    callWithPointer { thisPtr ->
+                        rustCall { status ->
+                            _UniFFILib.INSTANCE.uniffi_shared_fn_method_smartaccount_simulate_transactions(
+                                thisPtr,
+                                FfiConverterSequenceTypeTransaction.lower(`transactions`),
+                                FfiConverterOptionalTypeSimulateTransactionOptions.lower(`simulateOptions`),
+                                FfiConverterForeignExecutor.lower(scope),
+                                callback,
+                                USize(0),
+                                status,
+                            )
+                        }
+                    }
+                } catch (e: Exception) {
+                    continuation.resumeWithException(e)
+                }
+            }
+        }
+    }
+
+    @Throws(SmartAccountException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun `waitForTransaction`(`txHash`: String): TransactionReceipt? {
+        // Create a new `CoroutineScope` for this operation, suspend the coroutine, and call the
+        // scaffolding function, passing it one of the callback handlers from `AsyncTypes.kt`.
+        //
+        // Make sure to retain a reference to the callback handler to ensure that it's not GCed before
+        // it's invoked
+        var callbackHolder: UniFfiFutureCallbackHandlerOptionalTypeTransactionReceipt_TypeSmartAccountError? = null
+        return coroutineScope {
+            val scope = this
+            return@coroutineScope suspendCoroutine { continuation ->
+                try {
+                    val callback = UniFfiFutureCallbackHandlerOptionalTypeTransactionReceipt_TypeSmartAccountError(continuation)
+                    callbackHolder = callback
+                    callWithPointer { thisPtr ->
+                        rustCall { status ->
+                            _UniFFILib.INSTANCE.uniffi_shared_fn_method_smartaccount_wait_for_transaction(
+                                thisPtr,
+                                FfiConverterString.lower(`txHash`),
+                                FfiConverterForeignExecutor.lower(scope),
+                                callback,
+                                USize(0),
+                                status,
+                            )
+                        }
+                    }
+                } catch (e: Exception) {
+                    continuation.resumeWithException(e)
+                }
+            }
+        }
+    }
 }
 
 public object FfiConverterTypeSmartAccount : FfiConverter<SmartAccount, Pointer> {
@@ -976,10 +1177,12 @@ public interface SmartAccountBuilderInterface {
 
     fun `addChainOption`(`chain`: ULong, `rpcUrl`: String, `httpRelayerUrl`: String?):
         SmartAccountBuilder@Throws(SmartAccountException::class)
+    fun `addOpenIdWithEmailGuardianKey`(`idToken`: String, `emailAddress`: String, `roleWeight`: RoleWeight):
+        SmartAccountBuilder@Throws(SmartAccountException::class)
     suspend fun `build`(): SmartAccount
     fun `withActiveChain`(`activeChain`: ULong): SmartAccountBuilder
     fun `withAppId`(`appId`: String): SmartAccountBuilder
-    fun `withMasterKeySigner`(`signer`: Signer): SmartAccountBuilder
+    fun `withMasterKeySigner`(`signer`: Signer, `roleWeight`: RoleWeight?): SmartAccountBuilder
     fun `withUnipassServerUrl`(`unipassServerUrl`: String): SmartAccountBuilder
 }
 
@@ -1015,6 +1218,24 @@ class SmartAccountBuilder(
                     FfiConverterULong.lower(`chain`),
                     FfiConverterString.lower(`rpcUrl`),
                     FfiConverterOptionalString.lower(`httpRelayerUrl`),
+                    _status,
+                )
+            }
+        }.let {
+            FfiConverterTypeSmartAccountBuilder.lift(it)
+        }
+
+    @Throws(
+        SmartAccountException::class,
+        )
+    override fun `addOpenIdWithEmailGuardianKey`(`idToken`: String, `emailAddress`: String, `roleWeight`: RoleWeight): SmartAccountBuilder =
+        callWithPointer {
+            rustCallWithError(SmartAccountException) { _status ->
+                _UniFFILib.INSTANCE.uniffi_shared_fn_method_smartaccountbuilder_add_open_id_with_email_guardian_key(
+                    it,
+                    FfiConverterString.lower(`idToken`),
+                    FfiConverterString.lower(`emailAddress`),
+                    FfiConverterTypeRoleWeight.lower(`roleWeight`),
                     _status,
                 )
             }
@@ -1081,12 +1302,13 @@ class SmartAccountBuilder(
             FfiConverterTypeSmartAccountBuilder.lift(it)
         }
 
-    override fun `withMasterKeySigner`(`signer`: Signer): SmartAccountBuilder =
+    override fun `withMasterKeySigner`(`signer`: Signer, `roleWeight`: RoleWeight?): SmartAccountBuilder =
         callWithPointer {
             rustCall() { _status ->
                 _UniFFILib.INSTANCE.uniffi_shared_fn_method_smartaccountbuilder_with_master_key_signer(
                     it,
                     FfiConverterTypeSigner.lower(`signer`),
+                    FfiConverterOptionalTypeRoleWeight.lower(`roleWeight`),
                     _status,
                 )
             }
@@ -1187,10 +1409,307 @@ public object FfiConverterForeignExecutor : FfiConverter<CoroutineScope, USize> 
     }
 }
 
+data class FeeOption(
+    var `token`: String,
+    var `name`: String,
+    var `symbol`: String,
+    var `decimals`: UByte,
+    var `to`: String,
+    var `amount`: String,
+    var `error`: String?,
+)
+
+public object FfiConverterTypeFeeOption : FfiConverterRustBuffer<FeeOption> {
+    override fun read(buf: ByteBuffer): FeeOption {
+        return FeeOption(
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterUByte.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterOptionalString.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: FeeOption) = (
+        FfiConverterString.allocationSize(value.`token`) +
+            FfiConverterString.allocationSize(value.`name`) +
+            FfiConverterString.allocationSize(value.`symbol`) +
+            FfiConverterUByte.allocationSize(value.`decimals`) +
+            FfiConverterString.allocationSize(value.`to`) +
+            FfiConverterString.allocationSize(value.`amount`) +
+            FfiConverterOptionalString.allocationSize(value.`error`)
+        )
+
+    override fun write(value: FeeOption, buf: ByteBuffer) {
+        FfiConverterString.write(value.`token`, buf)
+        FfiConverterString.write(value.`name`, buf)
+        FfiConverterString.write(value.`symbol`, buf)
+        FfiConverterUByte.write(value.`decimals`, buf)
+        FfiConverterString.write(value.`to`, buf)
+        FfiConverterString.write(value.`amount`, buf)
+        FfiConverterOptionalString.write(value.`error`, buf)
+    }
+}
+
+data class Log(
+    var `address`: String,
+    var `topics`: List<String>,
+    var `data`: String,
+    var `blockHash`: String?,
+    var `blockNumber`: ULong?,
+    var `transactionHash`: String?,
+    var `transactionIndex`: ULong?,
+    var `logIndex`: String?,
+    var `transactionLogIndex`: String?,
+    var `logType`: String?,
+    var `removed`: Boolean?,
+)
+
+public object FfiConverterTypeLog : FfiConverterRustBuffer<Log> {
+    override fun read(buf: ByteBuffer): Log {
+        return Log(
+            FfiConverterString.read(buf),
+            FfiConverterSequenceString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterOptionalString.read(buf),
+            FfiConverterOptionalULong.read(buf),
+            FfiConverterOptionalString.read(buf),
+            FfiConverterOptionalULong.read(buf),
+            FfiConverterOptionalString.read(buf),
+            FfiConverterOptionalString.read(buf),
+            FfiConverterOptionalString.read(buf),
+            FfiConverterOptionalBoolean.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: Log) = (
+        FfiConverterString.allocationSize(value.`address`) +
+            FfiConverterSequenceString.allocationSize(value.`topics`) +
+            FfiConverterString.allocationSize(value.`data`) +
+            FfiConverterOptionalString.allocationSize(value.`blockHash`) +
+            FfiConverterOptionalULong.allocationSize(value.`blockNumber`) +
+            FfiConverterOptionalString.allocationSize(value.`transactionHash`) +
+            FfiConverterOptionalULong.allocationSize(value.`transactionIndex`) +
+            FfiConverterOptionalString.allocationSize(value.`logIndex`) +
+            FfiConverterOptionalString.allocationSize(value.`transactionLogIndex`) +
+            FfiConverterOptionalString.allocationSize(value.`logType`) +
+            FfiConverterOptionalBoolean.allocationSize(value.`removed`)
+        )
+
+    override fun write(value: Log, buf: ByteBuffer) {
+        FfiConverterString.write(value.`address`, buf)
+        FfiConverterSequenceString.write(value.`topics`, buf)
+        FfiConverterString.write(value.`data`, buf)
+        FfiConverterOptionalString.write(value.`blockHash`, buf)
+        FfiConverterOptionalULong.write(value.`blockNumber`, buf)
+        FfiConverterOptionalString.write(value.`transactionHash`, buf)
+        FfiConverterOptionalULong.write(value.`transactionIndex`, buf)
+        FfiConverterOptionalString.write(value.`logIndex`, buf)
+        FfiConverterOptionalString.write(value.`transactionLogIndex`, buf)
+        FfiConverterOptionalString.write(value.`logType`, buf)
+        FfiConverterOptionalBoolean.write(value.`removed`, buf)
+    }
+}
+
+data class RoleWeight(
+    var `ownerRoleWeight`: UInt,
+    var `assetsopRoleWeight`: UInt,
+    var `guardianRoleWeight`: UInt,
+)
+
+public object FfiConverterTypeRoleWeight : FfiConverterRustBuffer<RoleWeight> {
+    override fun read(buf: ByteBuffer): RoleWeight {
+        return RoleWeight(
+            FfiConverterUInt.read(buf),
+            FfiConverterUInt.read(buf),
+            FfiConverterUInt.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: RoleWeight) = (
+        FfiConverterUInt.allocationSize(value.`ownerRoleWeight`) +
+            FfiConverterUInt.allocationSize(value.`assetsopRoleWeight`) +
+            FfiConverterUInt.allocationSize(value.`guardianRoleWeight`)
+        )
+
+    override fun write(value: RoleWeight, buf: ByteBuffer) {
+        FfiConverterUInt.write(value.`ownerRoleWeight`, buf)
+        FfiConverterUInt.write(value.`assetsopRoleWeight`, buf)
+        FfiConverterUInt.write(value.`guardianRoleWeight`, buf)
+    }
+}
+
+data class SendingTransactionOptions(
+    var `fee`: FeeOption?,
+)
+
+public object FfiConverterTypeSendingTransactionOptions : FfiConverterRustBuffer<SendingTransactionOptions> {
+    override fun read(buf: ByteBuffer): SendingTransactionOptions {
+        return SendingTransactionOptions(
+            FfiConverterOptionalTypeFeeOption.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: SendingTransactionOptions) = (
+        FfiConverterOptionalTypeFeeOption.allocationSize(value.`fee`)
+        )
+
+    override fun write(value: SendingTransactionOptions, buf: ByteBuffer) {
+        FfiConverterOptionalTypeFeeOption.write(value.`fee`, buf)
+    }
+}
+
+data class SimulateResult(
+    var `isFeeRequired`: Boolean,
+    var `feeOptions`: List<FeeOption>,
+)
+
+public object FfiConverterTypeSimulateResult : FfiConverterRustBuffer<SimulateResult> {
+    override fun read(buf: ByteBuffer): SimulateResult {
+        return SimulateResult(
+            FfiConverterBoolean.read(buf),
+            FfiConverterSequenceTypeFeeOption.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: SimulateResult) = (
+        FfiConverterBoolean.allocationSize(value.`isFeeRequired`) +
+            FfiConverterSequenceTypeFeeOption.allocationSize(value.`feeOptions`)
+        )
+
+    override fun write(value: SimulateResult, buf: ByteBuffer) {
+        FfiConverterBoolean.write(value.`isFeeRequired`, buf)
+        FfiConverterSequenceTypeFeeOption.write(value.`feeOptions`, buf)
+    }
+}
+
+data class SimulateTransactionOptions(
+    var `token`: String?,
+)
+
+public object FfiConverterTypeSimulateTransactionOptions : FfiConverterRustBuffer<SimulateTransactionOptions> {
+    override fun read(buf: ByteBuffer): SimulateTransactionOptions {
+        return SimulateTransactionOptions(
+            FfiConverterOptionalString.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: SimulateTransactionOptions) = (
+        FfiConverterOptionalString.allocationSize(value.`token`)
+        )
+
+    override fun write(value: SimulateTransactionOptions, buf: ByteBuffer) {
+        FfiConverterOptionalString.write(value.`token`, buf)
+    }
+}
+
+data class Transaction(
+    var `to`: String,
+    var `data`: String,
+    var `value`: String,
+)
+
+public object FfiConverterTypeTransaction : FfiConverterRustBuffer<Transaction> {
+    override fun read(buf: ByteBuffer): Transaction {
+        return Transaction(
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: Transaction) = (
+        FfiConverterString.allocationSize(value.`to`) +
+            FfiConverterString.allocationSize(value.`data`) +
+            FfiConverterString.allocationSize(value.`value`)
+        )
+
+    override fun write(value: Transaction, buf: ByteBuffer) {
+        FfiConverterString.write(value.`to`, buf)
+        FfiConverterString.write(value.`data`, buf)
+        FfiConverterString.write(value.`value`, buf)
+    }
+}
+
+data class TransactionReceipt(
+    var `transactionHash`: String,
+    var `transactionIndex`: ULong,
+    var `blockHash`: String?,
+    var `blockNumber`: ULong?,
+    var `from`: String,
+    var `to`: String?,
+    var `cumulativeGasUsed`: String,
+    var `gasUsed`: String?,
+    var `contractAddress`: String?,
+    var `logs`: List<Log>,
+    var `status`: ULong?,
+    var `root`: String?,
+    var `transactionType`: ULong?,
+    var `effectiveGasPrice`: String?,
+)
+
+public object FfiConverterTypeTransactionReceipt : FfiConverterRustBuffer<TransactionReceipt> {
+    override fun read(buf: ByteBuffer): TransactionReceipt {
+        return TransactionReceipt(
+            FfiConverterString.read(buf),
+            FfiConverterULong.read(buf),
+            FfiConverterOptionalString.read(buf),
+            FfiConverterOptionalULong.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterOptionalString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterOptionalString.read(buf),
+            FfiConverterOptionalString.read(buf),
+            FfiConverterSequenceTypeLog.read(buf),
+            FfiConverterOptionalULong.read(buf),
+            FfiConverterOptionalString.read(buf),
+            FfiConverterOptionalULong.read(buf),
+            FfiConverterOptionalString.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: TransactionReceipt) = (
+        FfiConverterString.allocationSize(value.`transactionHash`) +
+            FfiConverterULong.allocationSize(value.`transactionIndex`) +
+            FfiConverterOptionalString.allocationSize(value.`blockHash`) +
+            FfiConverterOptionalULong.allocationSize(value.`blockNumber`) +
+            FfiConverterString.allocationSize(value.`from`) +
+            FfiConverterOptionalString.allocationSize(value.`to`) +
+            FfiConverterString.allocationSize(value.`cumulativeGasUsed`) +
+            FfiConverterOptionalString.allocationSize(value.`gasUsed`) +
+            FfiConverterOptionalString.allocationSize(value.`contractAddress`) +
+            FfiConverterSequenceTypeLog.allocationSize(value.`logs`) +
+            FfiConverterOptionalULong.allocationSize(value.`status`) +
+            FfiConverterOptionalString.allocationSize(value.`root`) +
+            FfiConverterOptionalULong.allocationSize(value.`transactionType`) +
+            FfiConverterOptionalString.allocationSize(value.`effectiveGasPrice`)
+        )
+
+    override fun write(value: TransactionReceipt, buf: ByteBuffer) {
+        FfiConverterString.write(value.`transactionHash`, buf)
+        FfiConverterULong.write(value.`transactionIndex`, buf)
+        FfiConverterOptionalString.write(value.`blockHash`, buf)
+        FfiConverterOptionalULong.write(value.`blockNumber`, buf)
+        FfiConverterString.write(value.`from`, buf)
+        FfiConverterOptionalString.write(value.`to`, buf)
+        FfiConverterString.write(value.`cumulativeGasUsed`, buf)
+        FfiConverterOptionalString.write(value.`gasUsed`, buf)
+        FfiConverterOptionalString.write(value.`contractAddress`, buf)
+        FfiConverterSequenceTypeLog.write(value.`logs`, buf)
+        FfiConverterOptionalULong.write(value.`status`, buf)
+        FfiConverterOptionalString.write(value.`root`, buf)
+        FfiConverterOptionalULong.write(value.`transactionType`, buf)
+        FfiConverterOptionalString.write(value.`effectiveGasPrice`, buf)
+    }
+}
+
 sealed class SignerException(message: String) : Exception(message) {
     // Each variant is a nested class
     // Flat enums carries a string error message, so no special implementation is necessary.
     class InnerSignerException(message: String) : SignerException(message)
+    class UnexpectedException(message: String) : SignerException(message)
 
     companion object ErrorHandler : CallStatusErrorHandler<SignerException> {
         override fun lift(error_buf: RustBuffer.ByValue): SignerException = FfiConverterTypeSignerError.lift(error_buf)
@@ -1201,6 +1720,7 @@ public object FfiConverterTypeSignerError : FfiConverterRustBuffer<SignerExcepti
     override fun read(buf: ByteBuffer): SignerException {
         return when (buf.getInt()) {
             1 -> SignerException.InnerSignerException(FfiConverterString.read(buf))
+            2 -> SignerException.UnexpectedException(FfiConverterString.read(buf))
             else -> throw RuntimeException("invalid error enum value, something is very wrong!!")
         }
     }
@@ -1215,6 +1735,10 @@ public object FfiConverterTypeSignerError : FfiConverterRustBuffer<SignerExcepti
                 buf.putInt(1)
                 Unit
             }
+            is SignerException.UnexpectedException -> {
+                buf.putInt(2)
+                Unit
+            }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
     }
 }
@@ -1227,6 +1751,8 @@ sealed class SmartAccountException(message: String) : Exception(message) {
     class InvalidHash(message: String) : SmartAccountException(message)
     class InvalidBuilder(message: String) : SmartAccountException(message)
     class UnexpectedException(message: String) : SmartAccountException(message)
+    class TypeParseException(message: String) : SmartAccountException(message)
+    class HttpRelayerClientException(message: String) : SmartAccountException(message)
 
     companion object ErrorHandler : CallStatusErrorHandler<SmartAccountException> {
         override fun lift(error_buf: RustBuffer.ByValue): SmartAccountException = FfiConverterTypeSmartAccountError.lift(error_buf)
@@ -1241,6 +1767,8 @@ public object FfiConverterTypeSmartAccountError : FfiConverterRustBuffer<SmartAc
             3 -> SmartAccountException.InvalidHash(FfiConverterString.read(buf))
             4 -> SmartAccountException.InvalidBuilder(FfiConverterString.read(buf))
             5 -> SmartAccountException.UnexpectedException(FfiConverterString.read(buf))
+            6 -> SmartAccountException.TypeParseException(FfiConverterString.read(buf))
+            7 -> SmartAccountException.HttpRelayerClientException(FfiConverterString.read(buf))
             else -> throw RuntimeException("invalid error enum value, something is very wrong!!")
         }
     }
@@ -1269,6 +1797,14 @@ public object FfiConverterTypeSmartAccountError : FfiConverterRustBuffer<SmartAc
             }
             is SmartAccountException.UnexpectedException -> {
                 buf.putInt(5)
+                Unit
+            }
+            is SmartAccountException.TypeParseException -> {
+                buf.putInt(6)
+                Unit
+            }
+            is SmartAccountException.HttpRelayerClientException -> {
+                buf.putInt(7)
                 Unit
             }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
@@ -1469,6 +2005,58 @@ public object FfiConverterTypeSigner : FfiConverterCallbackInterface<Signer>(
     }
 }
 
+public object FfiConverterOptionalULong : FfiConverterRustBuffer<ULong?> {
+    override fun read(buf: ByteBuffer): ULong? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterULong.read(buf)
+    }
+
+    override fun allocationSize(value: ULong?): Int {
+        if (value == null) {
+            return 1
+        } else {
+            return 1 + FfiConverterULong.allocationSize(value)
+        }
+    }
+
+    override fun write(value: ULong?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterULong.write(value, buf)
+        }
+    }
+}
+
+public object FfiConverterOptionalBoolean : FfiConverterRustBuffer<Boolean?> {
+    override fun read(buf: ByteBuffer): Boolean? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterBoolean.read(buf)
+    }
+
+    override fun allocationSize(value: Boolean?): Int {
+        if (value == null) {
+            return 1
+        } else {
+            return 1 + FfiConverterBoolean.allocationSize(value)
+        }
+    }
+
+    override fun write(value: Boolean?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterBoolean.write(value, buf)
+        }
+    }
+}
+
 public object FfiConverterOptionalString : FfiConverterRustBuffer<String?> {
     override fun read(buf: ByteBuffer): String? {
         if (buf.get().toInt() == 0) {
@@ -1495,6 +2083,136 @@ public object FfiConverterOptionalString : FfiConverterRustBuffer<String?> {
     }
 }
 
+public object FfiConverterOptionalTypeFeeOption : FfiConverterRustBuffer<FeeOption?> {
+    override fun read(buf: ByteBuffer): FeeOption? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterTypeFeeOption.read(buf)
+    }
+
+    override fun allocationSize(value: FeeOption?): Int {
+        if (value == null) {
+            return 1
+        } else {
+            return 1 + FfiConverterTypeFeeOption.allocationSize(value)
+        }
+    }
+
+    override fun write(value: FeeOption?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterTypeFeeOption.write(value, buf)
+        }
+    }
+}
+
+public object FfiConverterOptionalTypeRoleWeight : FfiConverterRustBuffer<RoleWeight?> {
+    override fun read(buf: ByteBuffer): RoleWeight? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterTypeRoleWeight.read(buf)
+    }
+
+    override fun allocationSize(value: RoleWeight?): Int {
+        if (value == null) {
+            return 1
+        } else {
+            return 1 + FfiConverterTypeRoleWeight.allocationSize(value)
+        }
+    }
+
+    override fun write(value: RoleWeight?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterTypeRoleWeight.write(value, buf)
+        }
+    }
+}
+
+public object FfiConverterOptionalTypeSendingTransactionOptions : FfiConverterRustBuffer<SendingTransactionOptions?> {
+    override fun read(buf: ByteBuffer): SendingTransactionOptions? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterTypeSendingTransactionOptions.read(buf)
+    }
+
+    override fun allocationSize(value: SendingTransactionOptions?): Int {
+        if (value == null) {
+            return 1
+        } else {
+            return 1 + FfiConverterTypeSendingTransactionOptions.allocationSize(value)
+        }
+    }
+
+    override fun write(value: SendingTransactionOptions?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterTypeSendingTransactionOptions.write(value, buf)
+        }
+    }
+}
+
+public object FfiConverterOptionalTypeSimulateTransactionOptions : FfiConverterRustBuffer<SimulateTransactionOptions?> {
+    override fun read(buf: ByteBuffer): SimulateTransactionOptions? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterTypeSimulateTransactionOptions.read(buf)
+    }
+
+    override fun allocationSize(value: SimulateTransactionOptions?): Int {
+        if (value == null) {
+            return 1
+        } else {
+            return 1 + FfiConverterTypeSimulateTransactionOptions.allocationSize(value)
+        }
+    }
+
+    override fun write(value: SimulateTransactionOptions?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterTypeSimulateTransactionOptions.write(value, buf)
+        }
+    }
+}
+
+public object FfiConverterOptionalTypeTransactionReceipt : FfiConverterRustBuffer<TransactionReceipt?> {
+    override fun read(buf: ByteBuffer): TransactionReceipt? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterTypeTransactionReceipt.read(buf)
+    }
+
+    override fun allocationSize(value: TransactionReceipt?): Int {
+        if (value == null) {
+            return 1
+        } else {
+            return 1 + FfiConverterTypeTransactionReceipt.allocationSize(value)
+        }
+    }
+
+    override fun write(value: TransactionReceipt?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterTypeTransactionReceipt.write(value, buf)
+        }
+    }
+}
+
 public object FfiConverterSequenceUByte : FfiConverterRustBuffer<List<UByte>> {
     override fun read(buf: ByteBuffer): List<UByte> {
         val len = buf.getInt()
@@ -1513,6 +2231,94 @@ public object FfiConverterSequenceUByte : FfiConverterRustBuffer<List<UByte>> {
         buf.putInt(value.size)
         value.forEach {
             FfiConverterUByte.write(it, buf)
+        }
+    }
+}
+
+public object FfiConverterSequenceString : FfiConverterRustBuffer<List<String>> {
+    override fun read(buf: ByteBuffer): List<String> {
+        val len = buf.getInt()
+        return List<String>(len) {
+            FfiConverterString.read(buf)
+        }
+    }
+
+    override fun allocationSize(value: List<String>): Int {
+        val sizeForLength = 4
+        val sizeForItems = value.map { FfiConverterString.allocationSize(it) }.sum()
+        return sizeForLength + sizeForItems
+    }
+
+    override fun write(value: List<String>, buf: ByteBuffer) {
+        buf.putInt(value.size)
+        value.forEach {
+            FfiConverterString.write(it, buf)
+        }
+    }
+}
+
+public object FfiConverterSequenceTypeFeeOption : FfiConverterRustBuffer<List<FeeOption>> {
+    override fun read(buf: ByteBuffer): List<FeeOption> {
+        val len = buf.getInt()
+        return List<FeeOption>(len) {
+            FfiConverterTypeFeeOption.read(buf)
+        }
+    }
+
+    override fun allocationSize(value: List<FeeOption>): Int {
+        val sizeForLength = 4
+        val sizeForItems = value.map { FfiConverterTypeFeeOption.allocationSize(it) }.sum()
+        return sizeForLength + sizeForItems
+    }
+
+    override fun write(value: List<FeeOption>, buf: ByteBuffer) {
+        buf.putInt(value.size)
+        value.forEach {
+            FfiConverterTypeFeeOption.write(it, buf)
+        }
+    }
+}
+
+public object FfiConverterSequenceTypeLog : FfiConverterRustBuffer<List<Log>> {
+    override fun read(buf: ByteBuffer): List<Log> {
+        val len = buf.getInt()
+        return List<Log>(len) {
+            FfiConverterTypeLog.read(buf)
+        }
+    }
+
+    override fun allocationSize(value: List<Log>): Int {
+        val sizeForLength = 4
+        val sizeForItems = value.map { FfiConverterTypeLog.allocationSize(it) }.sum()
+        return sizeForLength + sizeForItems
+    }
+
+    override fun write(value: List<Log>, buf: ByteBuffer) {
+        buf.putInt(value.size)
+        value.forEach {
+            FfiConverterTypeLog.write(it, buf)
+        }
+    }
+}
+
+public object FfiConverterSequenceTypeTransaction : FfiConverterRustBuffer<List<Transaction>> {
+    override fun read(buf: ByteBuffer): List<Transaction> {
+        val len = buf.getInt()
+        return List<Transaction>(len) {
+            FfiConverterTypeTransaction.read(buf)
+        }
+    }
+
+    override fun allocationSize(value: List<Transaction>): Int {
+        val sizeForLength = 4
+        val sizeForItems = value.map { FfiConverterTypeTransaction.allocationSize(it) }.sum()
+        return sizeForLength + sizeForItems
+    }
+
+    override fun write(value: List<Transaction>, buf: ByteBuffer) {
+        buf.putInt(value.size)
+        value.forEach {
+            FfiConverterTypeTransaction.write(it, buf)
         }
     }
 }
@@ -1562,6 +2368,18 @@ internal class UniFfiFutureCallbackHandlerString(val continuation: Continuation<
     }
 }
 
+internal class UniFfiFutureCallbackHandlerString_TypeSmartAccountError(val continuation: Continuation<String>) :
+    UniFfiFutureCallbackRustBuffer {
+    override fun invoke(_callbackData: USize, returnValue: RustBuffer.ByValue?, callStatus: RustCallStatus.ByValue) {
+        try {
+            checkCallStatus(SmartAccountException, callStatus)
+            continuation.resume(FfiConverterString.lift(returnValue!!))
+        } catch (e: Throwable) {
+            continuation.resumeWithException(e)
+        }
+    }
+}
+
 internal class UniFfiFutureCallbackHandlerTypeSmartAccount_TypeSmartAccountError(val continuation: Continuation<SmartAccount>) :
     UniFfiFutureCallbackPointer {
     override fun invoke(_callbackData: USize, returnValue: Pointer?, callStatus: RustCallStatus.ByValue) {
@@ -1580,6 +2398,42 @@ internal class UniFfiFutureCallbackHandlerTypeSmartAccountBuilder(val continuati
         try {
             checkCallStatus(NullCallStatusErrorHandler, callStatus)
             continuation.resume(FfiConverterTypeSmartAccountBuilder.lift(returnValue!!))
+        } catch (e: Throwable) {
+            continuation.resumeWithException(e)
+        }
+    }
+}
+
+internal class UniFfiFutureCallbackHandlerTypeSmartAccountBuilder_TypeSmartAccountError(val continuation: Continuation<SmartAccountBuilder>) :
+    UniFfiFutureCallbackPointer {
+    override fun invoke(_callbackData: USize, returnValue: Pointer?, callStatus: RustCallStatus.ByValue) {
+        try {
+            checkCallStatus(SmartAccountException, callStatus)
+            continuation.resume(FfiConverterTypeSmartAccountBuilder.lift(returnValue!!))
+        } catch (e: Throwable) {
+            continuation.resumeWithException(e)
+        }
+    }
+}
+
+internal class UniFfiFutureCallbackHandlerTypeSimulateResult_TypeSmartAccountError(val continuation: Continuation<SimulateResult>) :
+    UniFfiFutureCallbackRustBuffer {
+    override fun invoke(_callbackData: USize, returnValue: RustBuffer.ByValue?, callStatus: RustCallStatus.ByValue) {
+        try {
+            checkCallStatus(SmartAccountException, callStatus)
+            continuation.resume(FfiConverterTypeSimulateResult.lift(returnValue!!))
+        } catch (e: Throwable) {
+            continuation.resumeWithException(e)
+        }
+    }
+}
+
+internal class UniFfiFutureCallbackHandlerOptionalTypeTransactionReceipt_TypeSmartAccountError(val continuation: Continuation<TransactionReceipt?>) :
+    UniFfiFutureCallbackRustBuffer {
+    override fun invoke(_callbackData: USize, returnValue: RustBuffer.ByValue?, callStatus: RustCallStatus.ByValue) {
+        try {
+            checkCallStatus(SmartAccountException, callStatus)
+            continuation.resume(FfiConverterOptionalTypeTransactionReceipt.lift(returnValue!!))
         } catch (e: Throwable) {
             continuation.resumeWithException(e)
         }

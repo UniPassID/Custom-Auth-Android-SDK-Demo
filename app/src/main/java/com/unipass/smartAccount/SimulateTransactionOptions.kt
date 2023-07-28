@@ -1,5 +1,3 @@
 package com.unipass.smartAccount
 
-class SimulateTransactionOptions {
-    var feeToken: String? = null
-}
+import uniffi.shared.SimulateTransactionOptions as FfiSimulateTransactionOptions

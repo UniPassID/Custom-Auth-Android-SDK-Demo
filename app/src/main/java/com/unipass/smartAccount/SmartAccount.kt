@@ -4,14 +4,15 @@ import com.unipass.smartAccount.SmartAccountOptions
 import com.unipass.smartAccount.SmartAccountInitOptions
 import com.unipass.smartAccount.ChainID
 import kotlin.jvm.JvmOverloads
-import com.unipass.smartAccount.SimulateTransactionOptions
-import com.unipass.smartAccount.SimulateResult
-import com.unipass.smartAccount.SendTransactionOptions
 import kotlinx.coroutines.coroutineScope
 import org.web3j.protocol.core.methods.response.TransactionReceipt
 import org.web3j.utils.Numeric
+import uniffi.shared.SendingTransactionOptions
+import uniffi.shared.SimulateTransactionOptions
 import uniffi.shared.SmartAccount
 import uniffi.shared.SmartAccountBuilder
+import uniffi.shared.Transaction
+import uniffi.shared.SimulateResult
 import java.math.BigInteger
 import kotlin.coroutines.suspendCoroutine
 
@@ -24,7 +25,7 @@ class SmartAccount(options: SmartAccountOptions) {
         masterKeySigner = WrapSigner(options.masterKeySigner);
         builder = SmartAccountBuilder();
         builder!!.withAppId(options.appId);
-        builder!!.withMasterKeySigner(masterKeySigner);
+        builder!!.withMasterKeySigner(masterKeySigner, null);
         builder!!.withUnipassServerUrl(options.unipassServerUrl);
         options.chainOptions.iterator().forEach { chainOptions ->
             builder!!.addChainOption(
@@ -77,38 +78,41 @@ class SmartAccount(options: SmartAccountOptions) {
 
     /*********************** Transaction Functions  */
     @JvmOverloads
-    fun simulateTransaction(
-        tx: Transaction?,
+    suspend fun simulateTransaction(
+        tx: Transaction,
         options: SimulateTransactionOptions? = null
     ): SimulateResult? {
-        return null
+        return this.simulateTransactionBatch(arrayOf(tx), options)
     }
 
     @JvmOverloads
-    fun simulateTransactionBatch(
-        txs: Array<Transaction?>?,
+    suspend fun simulateTransactionBatch(
+        txs: Array<Transaction>,
         options: SimulateTransactionOptions? = null
     ): SimulateResult? {
-        return null
+        return inner?.simulateTransactions(txs.asList(), options)
     }
 
     @JvmOverloads
-    fun sendTransaction(tx: Transaction?, options: SendTransactionOptions? = null): String? {
-        return null
-    }
-
-    @JvmOverloads
-    fun sendTransactionBatch(
-        txs: Array<Transaction?>?,
-        options: SendTransactionOptions? = null
+    suspend fun sendTransaction(
+        tx: Transaction,
+        options: SendingTransactionOptions? = null
     ): String? {
-        return null
+        return this.sendTransactionBatch(arrayOf(tx), options)
+    }
+
+    @JvmOverloads
+    suspend fun sendTransactionBatch(
+        txs: Array<Transaction>,
+        options: SendingTransactionOptions? = null
+    ): String? {
+        return inner?.sendTransactions(txs.asList(), options)
     }
 
     @JvmOverloads
     fun signTransaction(
         txs: Array<Transaction?>?,
-        options: SendTransactionOptions? = null
+        options: SendingTransactionOptions? = null
     ): Transaction? {
         return null
     }
@@ -118,12 +122,12 @@ class SmartAccount(options: SmartAccountOptions) {
         return null
     }
 
-    fun waitTransactionReceiptByHash(
-        transactionHash: String?,
+    suspend fun waitTransactionReceiptByHash(
+        transactionHash: String,
         confirmations: Int,
         chainId: ChainID?,
         timeOut: Int
-    ): TransactionReceipt? {
-        return null
+    ): uniffi.shared.TransactionReceipt? {
+        return inner?.waitForTransaction(transactionHash);
     }
 }

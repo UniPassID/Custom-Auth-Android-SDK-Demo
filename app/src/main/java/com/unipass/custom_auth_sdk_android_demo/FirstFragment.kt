@@ -11,9 +11,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import uniffi.shared.Transaction
 import org.web3j.crypto.ECKeyPair
 import org.web3j.crypto.Keys
 import org.web3j.utils.Numeric
+import uniffi.shared.SendingTransactionOptions
 import java.math.BigInteger
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -93,19 +95,21 @@ class FirstFragment : Fragment() {
         try {
             val ecKeyPair: ECKeyPair = Keys.createEcKeyPair()
             val privateKeyInDec: BigInteger = ecKeyPair.getPrivateKey()
-            val sPrivatekeyInHex = privateKeyInDec.toString(16)
+//            val sPrivatekeyInHex = privateKeyInDec.toString(16)
+            val sPrivatekeyInHex =
+                "0xa73c09635a405d858f0aa373fba9f2980afa76639eb4347a273cf92110d2350a"
             val signer = EOASigner(sPrivatekeyInHex)
 
             /// init smart account instance
             val smartAccountOption = SmartAccountOptions(
                 signer,
                 "9e145ea3e5525ee793f39027646c4511",
-                "https://wallet.unipass.id/wallet-custom-auth",
+                "https://t.wallet.unipass.vip/wallet-coustom-auth",
                 arrayOf(
                     ChainOptions(
                         ChainID.POLYGON_MUMBAI,
                         "https://node.wallet.unipass.id/polygon-mumbai",
-                        "https://t.wallet.unipass.id/relayer-v2-polygon"
+                        "https://t.wallet.unipass.vip/relayer-v2-polygon"
                     )
                 )
             )
@@ -114,30 +118,34 @@ class FirstFragment : Fragment() {
 
             /// get smart account address
             val address = smartAccount.address;
+            println(address)
 
+            /// send transaction with smart account
+            // USDC Contract address
+            // ERC20 transfer data: transfer 216.29 USDC to 0x7D5FE7F6CFF4Badd6939db27CADA6f0Bd902D3C1
+            val tx = Transaction(
+                "0x87F0E95E11a49f56b329A1c143Fb22430C07332a",
+                "0xa9059cbb0000000000000000000000007d5fe7f6cff4badd6939db27cada6f0bd902d3c1000000000000000000000000000000000000000000000000000000000ce452d0",
+                "0x0"
+            );
+
+            /// simulate transaction to fetch tx fee
+            val simulateRet = smartAccount.simulateTransaction(tx)
+            println("SimulateRet: $simulateRet")
+            val sendTransactionOptions = SendingTransactionOptions(null)
+            if (simulateRet!!.isFeeRequired) {
+                sendTransactionOptions.fee =
+                    simulateRet?.feeOptions?.find { it.token.lowercase() == "0x87F0E95E11a49f56b329A1c143Fb22430C07332a".lowercase() }
+            }
 //
-//            /// send transaction with smart account
-//            val tx = Transaction();
-//            // USDC Contract address
-//            tx.to = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
-//            tx.value = BigInteger.valueOf(0);
-//            // ERC20 transfer data: transfer 216.29 USDC to 0x7D5FE7F6CFF4Badd6939db27CADA6f0Bd902D3C1
-//            tx.data =
-//                Numeric.hexStringToByteArray("0xa9059cbb0000000000000000000000007d5fe7f6cff4badd6939db27cada6f0bd902d3c1000000000000000000000000000000000000000000000000000000000ce452d0")
-//
-//
-//            /// simulate transaction to fetch tx fee
-//            val simulateRet = smartAccount.simulateTransaction(tx)
-//            val sendTransactionOptions = SendTransactionOptions()
-//            if (simulateRet!!.isFeeRequired == true) {
-//                sendTransactionOptions.fee = simulateRet.feeOptions.get(0)
-//            }
-//
-//            // send transaction to get tx hash
-//            val txHash = smartAccount.sendTransaction(tx, sendTransactionOptions)
+            // send transaction to get tx hash
+            println(sendTransactionOptions)
+            val txHash = smartAccount.sendTransaction(tx, sendTransactionOptions)
+            println(txHash);
+
 //            // get transaction receipt from chain
-//            val receipt =
-//                smartAccount.waitTransactionReceiptByHash(txHash, 2, ChainID.ETHEREUM_MAINNET, 60);
+            val receipt =
+                smartAccount.waitTransactionReceiptByHash(txHash!!, 2, ChainID.ETHEREUM_MAINNET, 60);
             var content = ""
             content += """
             address: $address
@@ -151,7 +159,8 @@ class FirstFragment : Fragment() {
             content += "message: $message\n"
             content += """
             sig: $sig
-            
+            simulate result: $simulateRet
+            receipt: $receipt
             """.trimIndent()
             binding.textviewFirst.text = content
         } catch (err: Exception) {
